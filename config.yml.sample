@@ -1,0 +1,51 @@
+icloud:
+  username: "your_apple_id@example.com"
+
+  # iCloud Drive path segments to your vault folder.
+  # Example if your vault is in iCloud Drive/Obsidian/MyVault:
+  drive_path: ["Obsidian", "MyVault"]
+
+  # Optional: set if you want icloudpy cookies stored somewhere explicit
+  # (useful in LXC so you know where sessions live)
+  session_dir: "/var/lib/icloudpy-session"
+
+  # Optional China endpoints (leave commented unless needed)
+  # home_endpoint: "https://www.icloud.com.cn"
+  # setup_endpoint: "https://setup.icloud.com.cn/setup/ws/1"
+
+git:
+  repo_path: "/srv/obsidian-vault-backup"
+  branch: "main"
+  remote: "origin"
+
+  author_name: "icloud-backup-bot"
+  author_email: "icloud-backup-bot@localhost"
+
+  commit_message: "iCloud backup sync"
+  push_force_with_lease: true
+
+sync:
+  # Usually same as repo_path; keep it explicit
+  local_root: "/srv/obsidian-vault-backup"
+
+  # If true: delete local files not present in iCloud folder
+  mirror_delete: false
+
+  # If true: compare by size + date_modified only (fast)
+  fast_compare: true
+
+  # Safety: never touch .git contents
+  protect_git_dir: true
+
+hooks:
+  pre:
+    # Start clean: discard local drift, prefer whatever is in GitLab before we apply iCloud sync
+    - "git fetch --all --prune"
+    - "git checkout main"
+    - "git reset --hard origin/main"
+    - "git clean -fd"
+
+  post:
+    # You can add anything you want here (notifications, logging, etc.)
+    - "git status --porcelain=v1"
+
