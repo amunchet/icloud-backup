@@ -35,6 +35,8 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional, Tuple
 
 import yaml
+import pidfile
+from pidfile import PidFile
 from icloudpy import ICloudPyService
 
 
@@ -433,6 +435,8 @@ def sync_icloud_drive_folder(cfg: AppConfig) -> Dict[str, int]:
     errors = 0
 
     for rel, drive_file in iter_icloud_tree(node):
+        if rel.parts and rel.parts[0] == ".git":
+            continue
         desired_files.add(rel)
         try:
             if should_download(cfg.sync.local_root, rel, drive_file, fast_compare=cfg.sync.fast_compare):
@@ -527,7 +531,8 @@ def main() -> int:
 
 if __name__ == "__main__":
     try:
-        raise SystemExit(main())
+        with PidFile("/tmp/icloud-backup.pid"):
+            raise SystemExit(main())
     except KeyboardInterrupt:
         raise SystemExit(130)
 

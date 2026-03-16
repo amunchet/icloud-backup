@@ -2,7 +2,7 @@
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install icloudpy pyyaml
+pip install icloudpy pyyaml pidfile
 
 # clone your repo first
 git clone git@gitlab.com:amunchet/obsidian.git /srv/obsidian-vault-backup
