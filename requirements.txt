@@ -14,7 +14,7 @@ keyrings.alt==5.0.2
 more-itertools==10.8.0
 pycparser==3.0
 pytz==2024.2
-requests==2.32.4
+requests==2.33.0
 SecretStorage==3.5.0
 six==1.17.0
 srp==1.0.22
