@@ -19,5 +19,5 @@ SecretStorage==3.5.0
 six==1.17.0
 srp==1.0.22
 tzlocal==5.2
-urllib3==2.6.3
+urllib3==2.7.0
 yml==0.0.1
